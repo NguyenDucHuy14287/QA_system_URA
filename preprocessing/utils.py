@@ -73,8 +73,10 @@ def preprocessing_text(text):
     # remove url
     text = re.sub(url_regex, "", text)
 
-    # remove punc and lower text
-    # text = re.sub('[!@#$%^&*()_+-=<>,/?~`"]+', '', text.lower()).strip()
+    # replace ?, ! by .
+    text = re.sub(r'[!?]', '.', text).strip()
+
+    # remove other punc and lower text
     text = re.sub(r'[^a-zA-Z0-9\s.\']', ' ', text.lower()).strip()
 
     return text
@@ -96,3 +98,15 @@ def split_and_concat_paragpraph(slice_text):
 
     return return_lst
 
+def split_sentences_and_token_by_paragpraph(paragpraphs):
+    sentences_lst = []
+    for para in paragpraphs:
+        tokens_lst = []
+        sentences = para.split(".")
+        for i in sentences:
+            tokens = list(filter(lambda x: x != "", i.split(" ")))
+            if len(tokens) > 0:
+                tokens_lst.append(tokens)
+        sentences_lst.append(tokens_lst)
+
+    return sentences_lst

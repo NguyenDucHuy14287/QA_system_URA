@@ -38,7 +38,8 @@ def preprocess_data():
                 # write_text(preprocess_text, "preprocessing.txt")
                 paragpraph_lst.append(paragpraph)
 
-    print(paragpraph_lst)
+    tokens_by_paragraph_lst = [split_sentences_and_token_by_paragpraph(para) for para in paragpraph_lst]
+    print(tokens_by_paragraph_lst)
 
 if __name__ == '__main__':
     # check_doc_by_id()
