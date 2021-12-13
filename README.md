@@ -1,10 +1,12 @@
 # QA_system_URA
-Question Answering system project from URA group. 
+## Question Answering system project from URA group. 
 
-Contributors:
+## Contributors:
 - Trang Sophia
 - Huy Nguyen
 
-Dataset: narrativeqa (https://huggingface.co/datasets/narrativeqa)
+## Dataset: narrativeqa (https://huggingface.co/datasets/narrativeqa)
 
-Run "pip3 install -r req.txt" to install needed libraries.
+## Running
+- Run "pip3 install -r req.txt" to install needed libraries.
+- Preprocess data: python3 preprocessing/main_preprocessing.py.
