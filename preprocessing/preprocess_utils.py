@@ -74,11 +74,11 @@ def re_sub_text(text):
     for pattern in rm_lst:
         text = re.sub(pattern, "", text)
 
-    # replace ?, ! by .
-    text = re.sub(r'[!?]', '.', text).strip()
+    # # replace ?, ! by .
+    # text = re.sub(r'[!?]', '.', text).strip()
 
     # remove other punc and lower text
-    text = re.sub(r'[^a-zA-Z0-9\s.,\']', ' ', text.lower()).strip()
+    text = re.sub(r'[^a-zA-Z0-9\s.,()!?&\']', ' ', text.lower()).strip()
 
     return text
 
@@ -94,7 +94,7 @@ def split_and_concat_paragpraph(slice_text):
         else:
             text = text + " " + sent
 
-    if text != "":
+    if text.strip() != "":
         return_lst.append(text)
 
     return return_lst
@@ -121,22 +121,34 @@ def clean_paragpraph(paragraphs):
     return_para = [join_tokens(i) for i in sentences_lst]
     return return_para
 
-def preprocess(raw_text, start_token, stop_token):
+def preprocess_doc(raw_text, start_token, stop_token):
     if is_html(raw_text):
         raw_text = BeautifulSoup(raw_text, "lxml").text
 
     preprocess_text = re_sub_text(raw_text)
     slice_text = slice_content(preprocess_text, start_token, stop_token)
     paragraph = split_and_concat_paragpraph(slice_text)
-    return clean_paragpraph(paragraph)
+    return paragraph
 
 def load_dataset_from_path(data_path):
-    file_lst = os.listdir(data_path)
-    doc = []
+    file_lst = [file_name for file_name in os.listdir(data_path) if file_name[-4:] == ".txt"]
+    data_set = []
     for file_name in file_lst:
+        doc = {"id": file_name[:-4], "clean_text": None, "paragraph": None, "qa": []}
+
         full_text = read_text(f"{data_path}/{file_name}")
+        doc["clean_text"] = full_text
+
         paragraph = full_text.split("\n")
-        doc.append(paragraph[:-1])
-    return doc
+        doc["paragraph"] = paragraph[:-1]
 
+        full_qa = read_text(f"{data_path}/qa/{file_name}")
+        pa_lst = full_qa.split("\n")
+        for qa in pa_lst[:-1]:
+            qa_lst = qa.split("[SEP]")
+            for ans in qa_lst[1:]:
+                doc["qa"].append((qa_lst[0], ans))
 
+        data_set.append(doc)
+
+    return data_set

@@ -24,7 +24,7 @@ class hf_tokenizer(): # hugging-face tokenizer
 
     def train_tokenizer(self, data_path):
         print(f"Training tokenizer from \'{data_path}\'.")
-        file_path_lst = [f"{data_path}/{file_name}" for file_name in os.listdir(data_path)]
+        file_path_lst = [f"{data_path}/{file_name}" for file_name in os.listdir(data_path) if file_name[-4:] == ".txt"]
         self.tokenizer.train(file_path_lst, self.trainer)
 
     def save_tokenizer(self, tokenizer_path_file="data/tokenizer_vocab.txt"):

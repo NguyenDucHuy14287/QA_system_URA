@@ -22,22 +22,31 @@ def check_doc_by_id():
 def clean_data(set_name, cleaned_data_path):
     print(f"=== [INFO] Cleaning {set_name} set and save to \'{cleaned_data_path}\'")
     os.makedirs(cleaned_data_path, exist_ok=True)
-    # dataset = load_dataset('narrativeqa', split=f'{set_name}[:10%]')
+    os.makedirs(f"{cleaned_data_path}/qa", exist_ok=True)
+    # dataset = load_dataset('narrativeqa', split=f'{set_name}[:1%]')
     dataset = load_dataset('narrativeqa', split=f'{set_name}')
     doc_id_set = set()
     for text in dataset:
         doc = text["document"]
-        if doc["id"] in doc_id_set or not is_english(doc["text"]):
-            continue
-        else:
-            doc_id_set.add(doc["id"])
-            print(f"Preprocessing doc id {doc['id']}")
-            clean_doc = preprocess(doc["text"], doc["start"], doc["end"])
-            for part in clean_doc:
-                append_text(part, f"{cleaned_data_path}/{doc['id']}.txt")
+        if is_english(doc["text"]):
+            # doc
+            if doc["id"] not in doc_id_set:
+                doc_id_set.add(doc["id"])
+                print(f"Preprocessing doc id {doc['id']}")
+                clean_doc = preprocess_doc(doc["text"], doc["start"], doc["end"])
+                for part in clean_doc:
+                    if part.strip() != "":
+                        append_text(part.strip(), f"{cleaned_data_path}/{doc['id']}.txt")
+
+            # qa
+            qa_lst = []
+            qa_lst.append(text["question"]["text"].lower())
+            for ans in text["answers"]:
+                qa_lst.append(ans["text"].lower())
+            append_text("[SEP]".join(qa_lst), f"{cleaned_data_path}/qa/{doc['id']}.txt")
 
 if __name__ == '__main__':
-    use_bert_pretrained = False
+    use_bert_pretrained_tokenize = False
 
     ### Clean dataset
     dataset_list = ["train", "test", "validation"]
@@ -48,7 +57,7 @@ if __name__ == '__main__':
 
 
     ### Create tokenize
-    if use_bert_pretrained:
+    if use_bert_pretrained_tokenize:
         tokenizer = hf_tokenizer(from_bert_pretrained=True)
     else:
         # Train tokenizer from corpus.
@@ -57,27 +66,34 @@ if __name__ == '__main__':
         if os.path.isfile(tokenizer_path_file):
             tokenizer.load_tokenizer(tokenizer_path_file)
         else:
-            tokenizer.train_tokenizer("data/preprocessed/train")
-            tokenizer.train_tokenizer("data/preprocessed/test")
-            tokenizer.train_tokenizer("data/preprocessed/validation")
+            for name in dataset_list:
+                tokenizer.train_tokenizer(f"data/preprocessed/{name}")
+                tokenizer.train_tokenizer(f"data/preprocessed/{name}/qa")
             tokenizer.save_tokenizer(tokenizer_path_file)
 
 
-    ### Load dataset from file (each dataset is a lst of document, each document is a lst of paragraphs)
-    train_set = load_dataset_from_path("data/preprocessed/train")
-    test_set = load_dataset_from_path("data/preprocessed/test")
-    valid_set = load_dataset_from_path("data/preprocessed/validation")
+    # ### Load dataset from file (each dataset is a lst of document, each document is a lst of paragraphs)
+    train_set = load_dataset_from_path("data/preprocessed/train")           # 1099
+    test_set = load_dataset_from_path("data/preprocessed/test")             # 354
+    valid_set = load_dataset_from_path("data/preprocessed/validation")      # 115
 
 
-    ### Tokenize dataset
-    train_tokens = [tokenizer.encode_sentence_lst(doc) for doc in train_set]
-    test_tokens = [tokenizer.encode_sentence_lst(doc) for doc in test_set]
-    valid_tokens = [tokenizer.encode_sentence_lst(doc) for doc in valid_set]
+    ### Tokenize first doc
+    first_doc = train_set[0]
+    print(first_doc["id"])
 
+    # token full text
+    doc_text_token = tokenizer.encode_sentence(first_doc["clean_text"])
+    print(doc_text_token.tokens)
+    print(doc_text_token.ids)
 
+    # token paragraph list
+    doc_paragraph_token = tokenizer.encode_sentence_lst(first_doc["paragraph"])
+    print(doc_paragraph_token)
 
-
-
+    # token qa list
+    qa_token = [tokenizer.encode_sentence_lst(qa_tup) for qa_tup in first_doc["qa"]]
+    print(qa_token)
 
 
 
