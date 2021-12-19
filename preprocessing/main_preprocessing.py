@@ -56,7 +56,7 @@ if __name__ == '__main__':
             clean_data(name, cleaned_data_path)
 
 
-    ### Create tokenize
+    ### Create tokenizer
     if use_bert_pretrained_tokenize:
         tokenizer = hf_tokenizer(from_bert_pretrained=True)
     else:
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     valid_set = load_dataset_from_path("data/preprocessed/validation")      # 115
 
 
-    ### Tokenize first doc
+    ### Tokenize first doc example
     first_doc = train_set[0]
     print(first_doc["id"])
 
