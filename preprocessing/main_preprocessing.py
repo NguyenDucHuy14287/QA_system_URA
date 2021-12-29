@@ -28,7 +28,7 @@ def clean_data(set_name, cleaned_data_path):
     doc_id_set = set()
     for text in dataset:
         doc = text["document"]
-        if is_english(doc["text"]):
+        if doc["id"] != "37c11f984cb14401d85abfc20e8305ca7a472c9f": # not english doc
             # doc
             if doc["id"] not in doc_id_set:
                 doc_id_set.add(doc["id"])
@@ -46,7 +46,7 @@ def clean_data(set_name, cleaned_data_path):
             append_text("[SEP]".join(qa_lst), f"{cleaned_data_path}/qa/{doc['id']}.txt")
 
 if __name__ == '__main__':
-    use_bert_pretrained_tokenize = False
+    use_bert_pretrained_tokenize = True
 
     ### Clean dataset
     dataset_list = ["train", "test", "validation"]
@@ -56,7 +56,7 @@ if __name__ == '__main__':
             clean_data(name, cleaned_data_path)
 
 
-    ### Create tokenizer
+    ### Create tokenize
     if use_bert_pretrained_tokenize:
         tokenizer = hf_tokenizer(from_bert_pretrained=True)
     else:
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     valid_set = load_dataset_from_path("data/preprocessed/validation")      # 115
 
 
-    ### Tokenize first doc example
+    ### Tokenize first doc
     first_doc = train_set[0]
     print(first_doc["id"])
 

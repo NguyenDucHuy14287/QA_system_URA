@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 url_regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
 rm_lst = [url_regex, "\t"]
 
-start_token_extra_lst = ["produced by", "start of the project", "start of this project"]
+start_token_extra_lst = ["produced by", "start of the project", "start of this project", "written by"]
 end_token_extra_lst = ["start full license", "end of the project", "end of project"]
 
 def write_text(text, path="data_text.txt"):
@@ -25,7 +25,7 @@ def read_text(path):
     f.close()
     return text
 
-def is_english(full_text, max_len=150):
+def is_english(full_text, max_len=500):
     if len(full_text) < max_len:
         max_len = len(full_text)
 
@@ -123,7 +123,11 @@ def clean_paragpraph(paragraphs):
 
 def preprocess_doc(raw_text, start_token, stop_token):
     if is_html(raw_text):
-        raw_text = BeautifulSoup(raw_text, "lxml").text
+        scrtext_html = BeautifulSoup(raw_text, features="lxml").body.find('td', attrs={'class': 'scrtext'})
+        if scrtext_html is not None:
+            raw_text = scrtext_html.text
+        else:
+            raw_text = BeautifulSoup(raw_text, "lxml").text
 
     preprocess_text = re_sub_text(raw_text)
     slice_text = slice_content(preprocess_text, start_token, stop_token)
@@ -152,3 +156,5 @@ def load_dataset_from_path(data_path):
         data_set.append(doc)
 
     return data_set
+
+
