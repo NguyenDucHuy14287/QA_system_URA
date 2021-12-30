@@ -28,22 +28,21 @@ def clean_data(set_name, cleaned_data_path):
     doc_id_set = set()
     for text in dataset:
         doc = text["document"]
-        if doc["id"] != "37c11f984cb14401d85abfc20e8305ca7a472c9f": # not english doc
-            # doc
-            if doc["id"] not in doc_id_set:
-                doc_id_set.add(doc["id"])
-                print(f"Preprocessing doc id {doc['id']}")
-                clean_doc = preprocess_doc(doc["text"], doc["start"], doc["end"])
-                for part in clean_doc:
-                    if part.strip() != "":
-                        append_text(part.strip(), f"{cleaned_data_path}/{doc['id']}.txt")
+        # doc
+        if doc["id"] not in doc_id_set:
+            doc_id_set.add(doc["id"])
+            print(f"Preprocessing doc id {doc['id']}")
+            clean_doc = preprocess_doc(doc["text"], doc["start"], doc["end"])
+            for part in clean_doc:
+                if part.strip() != "":
+                    append_text(part.strip(), f"{cleaned_data_path}/{doc['id']}.txt")
 
-            # qa
-            qa_lst = []
-            qa_lst.append(text["question"]["text"].lower())
-            for ans in text["answers"]:
-                qa_lst.append(ans["text"].lower())
-            append_text("[SEP]".join(qa_lst), f"{cleaned_data_path}/qa/{doc['id']}.txt")
+        # qa
+        qa_lst = []
+        qa_lst.append(text["question"]["text"].lower())
+        for ans in text["answers"]:
+            qa_lst.append(ans["text"].lower())
+        append_text("[SEP]".join(qa_lst), f"{cleaned_data_path}/qa/{doc['id']}.txt")
 
 if __name__ == '__main__':
     use_bert_pretrained_tokenize = True
