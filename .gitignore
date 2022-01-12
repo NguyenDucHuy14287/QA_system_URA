@@ -1,0 +1,4 @@
+./preprocessing/__pycache__
+./preprocessing/.ipynb_checkpoints
+./preprocessing/data
+./venv
