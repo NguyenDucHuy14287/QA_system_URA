@@ -16,7 +16,7 @@ def append_text(text, folder, file_name):
     f.write(text + "\n")
     f.close()
 
-def read_text(folder, path):
+def read_text(path):
     f = open(path, "r", encoding="utf-8")
     text = f.read()
     f.close()
@@ -41,10 +41,10 @@ def load_dataset_from_path(data_path):
     file_lst = [file_name for file_name in os.listdir(data_path) if file_name[-4:] == ".txt"]
     data_set = []
     for file_name in file_lst:
-        doc = {"id": file_name[:-4], "clean_text": None, "paragraph": None, "qa": []}
+        doc = {"id": file_name[:-4], "clean_text": None, "paragraph": None, "qa": [], "qa_text": []}
 
         full_text = read_text(f"{data_path}/{file_name}")
-        doc["clean_text"] = full_text
+        # doc["clean_text"] = full_text
 
         paragraph = full_text.split("\n")
         doc["paragraph"] = paragraph[:-1]
@@ -53,10 +53,11 @@ def load_dataset_from_path(data_path):
         pa_lst = full_qa.split("\n")
         for qa in pa_lst[:-1]:
             qa_lst = qa.split("[SEP]")
-            for ans in qa_lst[1:]:
+            for ans in qa_lst[1:-1]:
                 doc["qa"].append((qa_lst[0], ans))
+            doc["qa_text"].append(qa)
 
         data_set.append(doc)
-
+    
     return data_set
 

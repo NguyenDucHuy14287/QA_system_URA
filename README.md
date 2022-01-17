@@ -9,4 +9,5 @@ Question Answering system project from URA group.
 
 ## Running sequences:
 - Run "pip3 install -r req.txt" to install needed libraries.
-- Preprocess data: python3 preprocessing/main_preprocessing.py.
+- Preprocess data: python3 preprocessing/clean_data.py.
+- Load preprocessed data, tokenize and embedding: python3 preprocessing/token_and_embed.py.

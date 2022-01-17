@@ -49,7 +49,6 @@ if __name__ == "__main__":
 
     use_bert_pretrained_tokenize = True
 
-
     ### Create tokenize
     if use_bert_pretrained_tokenize:
         tokenizer = hf_tokenizer(from_bert_pretrained=True)

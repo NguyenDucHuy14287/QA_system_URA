@@ -3,3 +3,5 @@ langdetect==1.0.9
 bs4==0.0.1
 lxml==4.7.1
 tokenizers==0.10.3
+spacy==3.2.1
+unidecode
