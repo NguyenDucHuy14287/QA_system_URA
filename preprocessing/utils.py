@@ -4,8 +4,7 @@ import pickle
 from pathlib import Path
 
 
-def write_text(text, folder, path="data_text.txt"):
-    Path(folder).mkdir(parents=True, exist_ok=True)
+def write_text(text, path="data_text.txt"):
     f = open(path, "w", encoding="utf-8")
     f.write(text)
     f.close()
@@ -36,7 +35,6 @@ def read_pickle(path):
     with open(path, 'rb') as handle:
         return pickle.load(handle)
 
-
 def load_dataset_from_path(data_path):
     file_lst = [file_name for file_name in os.listdir(data_path) if file_name[-4:] == ".txt"]
     data_set = []
@@ -52,12 +50,14 @@ def load_dataset_from_path(data_path):
         full_qa = read_text(f"{data_path}/qa/{file_name}")
         pa_lst = full_qa.split("\n")
         for qa in pa_lst[:-1]:
-            qa_lst = qa.split("[SEP]")
+            qa_lst = qa.split("[sep]")
             for ans in qa_lst[1:-1]:
                 doc["qa"].append((qa_lst[0], ans))
-            doc["qa_text"].append(qa)
+            doc["qa_text"].append(qa.strip())
 
         data_set.append(doc)
     
     return data_set
+
+
 

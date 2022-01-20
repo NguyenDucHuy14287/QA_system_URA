@@ -13,7 +13,7 @@ from utils import append_text, write_pickle
 
 logging.basicConfig(level=logging.INFO)
 
-sequences_distribution = [i for i in range(1, 50000)]
+sequences_distribution = [i for i in range(1, 1000000)]
 entity_vocab = {}
 entity_vocab_per_doc = {}
 NER = spacy.load("en_core_web_sm")
@@ -52,11 +52,12 @@ def mask_entity(text):
             if word.text not in entity_vocab_per_doc:
                 number = random.choice(sequences_distribution)
                 sequences_distribution.remove(number)
-                mask = f"[ENT{number}]"
+                mask = f"[ent{number}]"
                 entity_vocab_per_doc[word.text] = mask
             else:
                 mask = entity_vocab_per_doc[word.text]
-            text = re.sub(word.text, mask, text)
+            
+            text = text.replace(word.text, mask)
     return text
 
 
@@ -66,26 +67,24 @@ def slice_content(raw_text, start_token, end_token):
 
     start_pos_lst = [raw_text.lower().find(i) for i in start_token_lst]
     end_pos_lst = [raw_text.lower().rfind(i) for i in end_token_lst]
-    max_start_pos = 0
+
+    min_start_pos = max(start_pos_lst)
     min_end_pos = len(raw_text)
     end_token1 = ""
+    
+    for start_pos in start_pos_lst:
+        if start_pos != -1 and start_pos <= min_start_pos:
+                min_start_pos = start_pos
 
-    # choose token 'produced by' or 'written by'
-    if start_pos_lst[0] > -1 and start_pos_lst[3] > -1:
-        if start_pos_lst[0] > start_pos_lst[3]:
-            del start_pos_lst[0]
-        else:
-            del start_pos_lst[3]
-    max_start_pos = max(start_pos_lst)
+    if min_start_pos == -1:
+        min_start_pos = 0
 
     for index, end_pos in enumerate(end_pos_lst):
         if end_pos != -1 and end_pos <= min_end_pos:
-            min_end_pos = end_pos
-            end_token1 = end_token_lst[index]
-    if end_token1 != end_token:
-        end_token1 = ""
+                min_end_pos = end_pos
+                end_token1 = end_token_lst[index]
 
-    return raw_text[max_start_pos:min_end_pos + len(end_token1)]
+    return raw_text[min_start_pos:min_end_pos + len(end_token1)]
 
 
 def re_sub_text(text):
@@ -101,19 +100,25 @@ def re_sub_text(text):
 
     # remove other punc and lower text
     # text = re.sub(r'[^a-zA-Z0-9\s.,()!?&\']', ' ', text.lower()).strip()
-    text = re.sub(r'[^a-zA-Z\s.]', ' ', text).strip()
+    text = re.sub(r'[^a-zA-Z\s.\']', ' ', text).strip()
 
     return text
 
 
 def clean_sentence(sen):
     token = " [SEP] "
-    sen = re.sub(r"\s+", " ", sen.lower())
+    sen = re.sub(r"\s+", " ", sen)
     sen = mask_entity(sen)
     sen = sen.replace(".", token)
     if not sen.strip().endswith("[SEP]"):
         sen = sen + token
-    return sen
+    return sen.lower()
+
+
+def preprocess_qa(sen):
+    sen = mask_entity(sen)
+    sen = sen.replace('?','').replace('.','') + " [SEP] "
+    return sen.lower()
 
 
 def split_and_concat_paragpraph(sliced_text):
@@ -186,12 +191,12 @@ def clean_data(set_name, cleaned_data_path):
                     entity_vocab[doc["id"]] = entity_vocab_per_doc
 
             # qa
-            print("=== Processing qa:", doc["id"], doc["kind"])
+            # print("=== Processing qa:", doc["id"], doc["kind"])
             qa_lst = []
-            mask_text = clean_sentence(text["question"]["text"])
-            qa_lst.append(mask_text)
+            mask_text = preprocess_qa(text["question"]["text"])
+            qa_lst.append(mask_text.replace('?',''))
             for ans in text["answers"]:
-                mask_text = clean_sentence(ans["text"])
+                mask_text = preprocess_qa(ans["text"])
                 qa_lst.append(mask_text)
             append_text("".join(qa_lst), f"{cleaned_data_path}/qa", f"{doc['id']}.txt")
 
@@ -207,7 +212,6 @@ if __name__ == '__main__':
             clean_data(name, cleaned_data_path)
         if len(entity_vocab) > 0:
             write_pickle(entity_vocab, vocab_folder, "entities")
-
 
 
 
