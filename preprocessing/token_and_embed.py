@@ -125,47 +125,47 @@ if __name__ == "__main__":
     #     # print(glove.most_similar(token))                    # most similar token
 
 
-    for doc in train_set:
-        paragraph_embed_lst = []
-        for paragraph in doc["paragraph"]:
-            token_lst = token_with_checking(paragraph, spacy_tokenizer)
-            paragraph_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
-            paragraph_embed_lst.append(paragraph_embed)
-        write_pickle(paragraph_embed_lst, "./data/embed/train", doc["id"])
+    # for doc in train_set:
+    #     paragraph_embed_lst = []
+    #     for paragraph in doc["paragraph"]:
+    #         token_lst = token_with_checking(paragraph, spacy_tokenizer)
+    #         paragraph_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
+    #         paragraph_embed_lst.append(paragraph_embed)
+    #     write_pickle(paragraph_embed_lst, "./data/embed/train", doc["id"])
         
-        qa_embed_lst = []
-        for qa_text in doc["qa_text"]:
-            token_lst = token_with_checking(qa_text, spacy_tokenizer)
-            qa_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
-            qa_embed_lst.append(qa_embed)
-        write_pickle(qa_embed_lst, "./data/embed/train/qa", doc["id"])
+    #     qa_embed_lst = []
+    #     for qa_text in doc["qa_text"]:
+    #         token_lst = token_with_checking(qa_text, spacy_tokenizer)
+    #         qa_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
+    #         qa_embed_lst.append(qa_embed)
+    #     write_pickle(qa_embed_lst, "./data/embed/train/qa", doc["id"])
 
-    for doc in test_set:
-        paragraph_embed_lst = []
-        for paragraph in doc["paragraph"]:
-            token_lst = token_with_checking(paragraph, spacy_tokenizer)
-            paragraph_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
-            paragraph_embed_lst.append(paragraph_embed)
-        write_pickle(paragraph_embed_lst, "./data/embed/test", doc["id"])
+    # for doc in test_set:
+    #     paragraph_embed_lst = []
+    #     for paragraph in doc["paragraph"]:
+    #         token_lst = token_with_checking(paragraph, spacy_tokenizer)
+    #         paragraph_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
+    #         paragraph_embed_lst.append(paragraph_embed)
+    #     write_pickle(paragraph_embed_lst, "./data/embed/test", doc["id"])
         
-        qa_embed_lst = []
-        for qa_text in doc["qa_text"]:
-            token_lst = token_with_checking(qa_text, spacy_tokenizer)
-            qa_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
-            qa_embed_lst.append(qa_embed)
-        write_pickle(qa_embed_lst, "./data/embed/test/qa", doc["id"])
+    #     qa_embed_lst = []
+    #     for qa_text in doc["qa_text"]:
+    #         token_lst = token_with_checking(qa_text, spacy_tokenizer)
+    #         qa_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
+    #         qa_embed_lst.append(qa_embed)
+    #     write_pickle(qa_embed_lst, "./data/embed/test/qa", doc["id"])
 
-    for doc in valid_set:
-        paragraph_embed_lst = []
-        for paragraph in doc["paragraph"]:
-            token_lst = token_with_checking(paragraph, spacy_tokenizer)
-            paragraph_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
-            paragraph_embed_lst.append(paragraph_embed)
-        write_pickle(paragraph_embed_lst, "./data/embed/validation", doc["id"])
+    # for doc in valid_set:
+    #     paragraph_embed_lst = []
+    #     for paragraph in doc["paragraph"]:
+    #         token_lst = token_with_checking(paragraph, spacy_tokenizer)
+    #         paragraph_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
+    #         paragraph_embed_lst.append(paragraph_embed)
+    #     write_pickle(paragraph_embed_lst, "./data/embed/validation", doc["id"])
         
-        qa_embed_lst = []
-        for qa_text in doc["qa_text"]:
-            token_lst = token_with_checking(qa_text, spacy_tokenizer)
-            qa_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
-            qa_embed_lst.append(qa_embed)
-        write_pickle(qa_embed_lst, "./data/embed/validation/qa", doc["id"])
+    #     qa_embed_lst = []
+    #     for qa_text in doc["qa_text"]:
+    #         token_lst = token_with_checking(qa_text, spacy_tokenizer)
+    #         qa_embed = [glove.word_vectors[glove.dictionary[token]] for token in token_lst]
+    #         qa_embed_lst.append(qa_embed)
+    #     write_pickle(qa_embed_lst, "./data/embed/validation/qa", doc["id"])
