@@ -16,3 +16,5 @@ Question Answering system project from URA group.
 ## Notes for models:
 - Word embedding: GLOVE
 - Padding tokens ?
+- Optimizer? Adam?
+- Evaluation? 
