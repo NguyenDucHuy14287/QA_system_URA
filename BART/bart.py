@@ -1,14 +1,14 @@
-# import pickle
-# def pickle_load(file_path):
-#     file = open(file_path, 'rb')
-#     data = pickle.load(file)
-#     file.close()
-#     return data
+import pickle
+def pickle_load(file_path):
+    file = open(file_path, 'rb')
+    data = pickle.load(file)
+    file.close()
+    return data
 
-# def pickle_dump(data, file_path):
-#     file = open(file_path, 'wb')
-#     pickle.dump(data, file)
-#     file.close()
+def pickle_dump(data, file_path):
+    file = open(file_path, 'wb')
+    pickle.dump(data, file)
+    file.close()
 
 # ### prepare dataset
 # from datasets import Dataset
