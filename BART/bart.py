@@ -27,9 +27,10 @@ def pickle_dump(data, file_path):
 # dataset = Dataset.from_dict(train_set_dict)
 
 
-# ### preprocess
+### preprocess
 # from transformers import AutoTokenizer
 # tokenizer = AutoTokenizer.from_pretrained('a-ware/bart-squadv2')
+tokenizer = pickle_load("tokenizer")
 
 # max_length = 512 # The maximum length of a feature (question and context)
 # doc_stride = 128 # The authorized overlap between two part of the context when splitting it is needed.
@@ -117,15 +118,13 @@ tokenized_datasets = pickle_load("tokenized_datasets")
 
 
 ### modeling
-from transformers import AutoModelForQuestionAnswering, TrainingArguments, Trainer
-from transformers import BartForQuestionAnswering
+# from transformers import AutoModelForQuestionAnswering, BartForQuestionAnswering
+# model = BartForQuestionAnswering.from_pretrained('a-ware/bart-squadv2')
+model = pickle_load("model")
 
-model = BartForQuestionAnswering.from_pretrained('a-ware/bart-squadv2')
-print(model)
-# model_name = 'bart-squadv2'
-
+# from transformers import TrainingArguments, Trainer
 # args = TrainingArguments(
-#     f"{model_name}-finetuned",
+#     f"bart-squadv2-finetuned",
 #     evaluation_strategy = "epoch",
 #     learning_rate=1e-5,
 #     per_device_train_batch_size=8,
@@ -147,4 +146,7 @@ print(model)
 #     tokenizer=tokenizer,
 # )
 
-# print(trainer)
+
+print(tokenizer)
+print(tokenized_datasets)
+print(model)
