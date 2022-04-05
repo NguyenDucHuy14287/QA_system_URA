@@ -1,14 +1,14 @@
-import pickle
-def pickle_load(file_path):
-    file = open(file_path, 'rb')
-    data = pickle.load(file)
-    file.close()
-    return data
+# import pickle
+# def pickle_load(file_path):
+#     file = open(file_path, 'rb')
+#     data = pickle.load(file)
+#     file.close()
+#     return data
 
-def pickle_dump(data, file_path):
-    file = open(file_path, 'wb')
-    pickle.dump(data, file)
-    file.close()
+# def pickle_dump(data, file_path):
+#     file = open(file_path, 'wb')
+#     pickle.dump(data, file)
+#     file.close()
 
 # ### prepare dataset
 # from datasets import Dataset
@@ -27,9 +27,9 @@ def pickle_dump(data, file_path):
 # dataset = Dataset.from_dict(train_set_dict)
 
 
-### preprocess
-from transformers import AutoTokenizer
-tokenizer = AutoTokenizer.from_pretrained('a-ware/bart-squadv2')
+# ### preprocess
+# from transformers import AutoTokenizer
+# tokenizer = AutoTokenizer.from_pretrained('a-ware/bart-squadv2')
 
 # max_length = 512 # The maximum length of a feature (question and context)
 # doc_stride = 128 # The authorized overlap between two part of the context when splitting it is needed.
@@ -121,30 +121,30 @@ from transformers import AutoModelForQuestionAnswering, TrainingArguments, Train
 from transformers import BartForQuestionAnswering
 
 model = BartForQuestionAnswering.from_pretrained('a-ware/bart-squadv2')
+print(model)
+# model_name = 'bart-squadv2'
 
-model_name = 'bart-squadv2'
+# args = TrainingArguments(
+#     f"{model_name}-finetuned",
+#     evaluation_strategy = "epoch",
+#     learning_rate=1e-5,
+#     per_device_train_batch_size=8,
+#     per_device_eval_batch_size=32,
+#     num_train_epochs=3,
+#     weight_decay=0.01,
+#     push_to_hub=True,
+# )
 
-args = TrainingArguments(
-    f"{model_name}-finetuned",
-    evaluation_strategy = "epoch",
-    learning_rate=1e-5,
-    per_device_train_batch_size=8,
-    per_device_eval_batch_size=32,
-    num_train_epochs=3,
-    weight_decay=0.01,
-    push_to_hub=True,
-)
+# from transformers import default_data_collator
+# data_collator = default_data_collator
 
-from transformers import default_data_collator
-data_collator = default_data_collator
+# trainer = Trainer(
+#     model,
+#     args,
+#     train_dataset=tokenized_datasets,
+#     eval_dataset=tokenized_datasets,
+#     data_collator=data_collator,
+#     tokenizer=tokenizer,
+# )
 
-trainer = Trainer(
-    model,
-    args,
-    train_dataset=tokenized_datasets,
-    eval_dataset=tokenized_datasets,
-    data_collator=data_collator,
-    tokenizer=tokenizer,
-)
-
-print(trainer)
+# print(trainer)
