@@ -6,3 +6,8 @@ tokenizers==0.10.3
 spacy==3.2.1
 glove_python_binary
 unidecode
+transformers==4.17.0
+torch==1.11.0
+sentencepiece==0.1.96
+pytorch-transformers==1.2.0
+keras==2.8.0

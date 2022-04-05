@@ -11,3 +11,8 @@ Question Answering system project from URA group.
 - Run "pip3 install -r req.txt" to install needed libraries.
 - Preprocess data: python3 preprocessing/clean_data.py.
 - Load preprocessed data, tokenize and embedding: python3 preprocessing/token_and_embed.py.
+
+
+## Notes for models:
+- Word embedding: GLOVE
+- Padding tokens ?
