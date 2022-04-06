@@ -20,6 +20,7 @@ eval_dataloader = DataLoader(tokenized_datasets, batch_size=8)
 
 ############### Load model
 model = pickle_load("model")
+print("model 1:", model)
 
 from torch.optim import AdamW
 optimizer = AdamW(model.parameters(), lr=5e-5)
@@ -38,18 +39,19 @@ from tqdm.auto import tqdm
 progress_bar = tqdm(range(num_training_steps))
 
 model.train()
-# for epoch in range(num_epochs):
-#     for batch in train_dataloader:
-#         batch = {k: v.to(device) for k, v in batch.items()}
-#         outputs = model(**batch)
-#         loss = outputs.loss
-#         loss.backward()
+for epoch in range(num_epochs):
+    for batch in train_dataloader:
+        batch = {k: v.to(device) for k, v in batch.items()}
+        outputs = model(**batch)
+        loss = outputs.loss
+        loss.backward()
 
-#         optimizer.step()
-#         lr_scheduler.step()
-#         optimizer.zero_grad()
-#         progress_bar.update(1)
-
+        optimizer.step()
+        lr_scheduler.step()
+        optimizer.zero_grad()
+        progress_bar.update(1)
+        
+print("model 2:", model)
 
 # question, text = "Who was Jim Henson?", "Jim Henson was a nice puppet"
 # encoding = tokenizer(question, text, return_tensors='pt')
