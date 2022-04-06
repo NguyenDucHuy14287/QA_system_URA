@@ -54,8 +54,8 @@ for epoch in range(num_epochs):
 tokenizer = pickle_load("tokenizer")
 question, text = "Who was Jim Henson?", "Jim Henson was a nice puppet"
 encoding = tokenizer(question, text, return_tensors='pt')
-input_ids = encoding['input_ids']
-attention_mask = encoding['attention_mask']
+input_ids = encoding['input_ids'].to(device)
+attention_mask = encoding['attention_mask'].to(device)
 
 start_scores, end_scores = model(input_ids, attention_mask=attention_mask, output_attentions=False)[:2]
 
