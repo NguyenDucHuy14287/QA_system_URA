@@ -11,6 +11,7 @@ def pickle_load(file_path):
 
 ############### Load data
 tokenized_datasets = pickle_load("tokenized_datasets")
+tokenized_datasets = tokenized_datasets.remove_columns(["answers", "context", "question"])
 tokenized_datasets.set_format("torch")
 
 from torch.utils.data import DataLoader
