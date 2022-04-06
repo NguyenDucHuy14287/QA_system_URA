@@ -20,7 +20,6 @@ eval_dataloader = DataLoader(tokenized_datasets, batch_size=8)
 
 ############### Load model
 model = pickle_load("model")
-print("model 1:", model)
 
 from torch.optim import AdamW
 optimizer = AdamW(model.parameters(), lr=5e-5)
@@ -50,18 +49,19 @@ for epoch in range(num_epochs):
         lr_scheduler.step()
         optimizer.zero_grad()
         progress_bar.update(1)
-        
-print("model 2:", model)
 
-# question, text = "Who was Jim Henson?", "Jim Henson was a nice puppet"
-# encoding = tokenizer(question, text, return_tensors='pt')
-# input_ids = encoding['input_ids']
-# attention_mask = encoding['attention_mask']
 
-# start_scores, end_scores = model(input_ids, attention_mask=attention_mask, output_attentions=False)[:2]
+tokenizer = pickle_load("tokenizer")
+question, text = "Who was Jim Henson?", "Jim Henson was a nice puppet"
+encoding = tokenizer(question, text, return_tensors='pt')
+input_ids = encoding['input_ids']
+attention_mask = encoding['attention_mask']
 
-# all_tokens = tokenizer.convert_ids_to_tokens(input_ids[0])
-# answer = ' '.join(all_tokens[torch.argmax(start_scores) : torch.argmax(end_scores)+1])
-# answer = tokenizer.convert_tokens_to_ids(answer.split())
-# answer = tokenizer.decode(answer)
-# #answer => 'a nice puppet' 
+start_scores, end_scores = model(input_ids, attention_mask=attention_mask, output_attentions=False)[:2]
+
+all_tokens = tokenizer.convert_ids_to_tokens(input_ids[0])
+answer = ' '.join(all_tokens[torch.argmax(start_scores) : torch.argmax(end_scores)+1])
+answer = tokenizer.convert_tokens_to_ids(answer.split())
+answer = tokenizer.decode(answer)
+#answer => 'a nice puppet' 
+print(answer)
