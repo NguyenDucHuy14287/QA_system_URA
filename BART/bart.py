@@ -30,7 +30,7 @@ def pickle_dump(data, file_path):
 ### preprocess
 # from transformers import AutoTokenizer
 # tokenizer = AutoTokenizer.from_pretrained('a-ware/bart-squadv2')
-tokenizer = pickle_load("tokenizer")
+tokenizer = pickle_load("BartTokenizer")
 
 # max_length = 512 # The maximum length of a feature (question and context)
 # doc_stride = 128 # The authorized overlap between two part of the context when splitting it is needed.
