@@ -31,8 +31,8 @@ model = pickle_load("model")
 #     name="linear", optimizer=optimizer, num_warmup_steps=0, num_training_steps=num_training_steps
 # )
 
-# device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-# model.to(device)
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+model.to(device)
 
 # from tqdm.auto import tqdm
 # progress_bar = tqdm(range(num_training_steps))
