@@ -60,7 +60,7 @@ model.to(device)
 # pickle_dump(model, 'trained_model')
 
 tokenizer = pickle_load("tokenizer")
-question, text = "Who is Jim?", "Jim was a teacher. He taught at a secondary school"
+question, text = "Who is Jim?", "Jim is a teacher. He taught at a secondary school"
 encoding = tokenizer(question, text, return_tensors='pt')
 input_ids = encoding['input_ids'].to(device)
 attention_mask = encoding['attention_mask'].to(device)
