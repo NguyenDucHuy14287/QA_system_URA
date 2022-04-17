@@ -61,33 +61,20 @@ model = pickle_load("model")
 # pickle_dump(model, 'trained_model')
 
 tokenizer = pickle_load("tokenizer")
-# question, text = "Where does Tom live?", "Tom is an engineer in San Francisco."
-# seq = '<s>' +  question + ' </s> </s> ' + text + ' </s>'
-# encoding = tokenizer(seq, return_tensors='pt')
-# input_ids = encoding['input_ids']#.to(device)
-# attention_mask = encoding['attention_mask']#.to(device)
-
-# start_scores, end_scores = model(input_ids, attention_mask=attention_mask, output_attentions=False)[:2]
-
-# all_tokens = tokenizer.convert_ids_to_tokens(input_ids[0])
-# answer = ' '.join(all_tokens[torch.argmax(start_scores) : torch.argmax(end_scores)+1])
-# answer = tokenizer.convert_tokens_to_ids(answer.split())
-# answer = tokenizer.decode(answer)
-# #answer => 'a nice puppet' 
-# print(answer)
-
-
-
-def answer(question, text):
-    seq = '<s>' +  question + ' </s> </s> ' + text + ' </s>'
-    tokens = tokenizer.encode_plus(seq, return_tensors='pt', padding='max_length', max_length=1024)
-    input_ids = tokens['input_ids']#.to('cuda')
-    attention_mask = tokens['attention_mask']#.to('cuda')
-    start, end = model(input_ids, attention_mask=attention_mask)
-    start_idx = int(start.argmax().int())
-    end_idx =  int(end.argmax().int())
-    print(tokenizer.decode(input_ids[0, start_idx:end_idx]).strip())
-
-
 question, text = "Where does Tom live?", "Tom is an engineer in San Francisco."
-answer(question, text)
+seq = '<s>' +  question + ' </s> </s> ' + text + ' </s>'
+encoding = tokenizer(seq, return_tensors='pt')
+input_ids = encoding['input_ids']#.to(device)
+attention_mask = encoding['attention_mask']#.to(device)
+
+start_scores, end_scores = model(input_ids, attention_mask=attention_mask, output_attentions=False)[:2]
+
+all_tokens = tokenizer.convert_ids_to_tokens(input_ids[0])
+answer = ' '.join(all_tokens[torch.argmax(start_scores) : torch.argmax(end_scores)+1])
+answer = tokenizer.convert_tokens_to_ids(answer.split())
+answer = tokenizer.decode(answer)
+#answer => 'a nice puppet' 
+print(answer)
+
+
+
