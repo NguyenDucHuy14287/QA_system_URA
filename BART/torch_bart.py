@@ -32,8 +32,8 @@ model = pickle_load("trained_model")
 #     name="linear", optimizer=optimizer, num_warmup_steps=0, num_training_steps=num_training_steps
 # )
 
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-model.to(device)
+# device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+# model.to(device)
 
 # from tqdm.auto import tqdm
 # progress_bar = tqdm(range(num_training_steps))
@@ -62,8 +62,8 @@ model.to(device)
 tokenizer = pickle_load("tokenizer")
 question, text = "Who was Jim Henson?", "Jim Henson was a nice puppet"
 encoding = tokenizer(question, text, return_tensors='pt')
-input_ids = encoding['input_ids'].to(device)
-attention_mask = encoding['attention_mask'].to(device)
+input_ids = encoding['input_ids']#.to(device)
+attention_mask = encoding['attention_mask']#.to(device)
 
 start_scores, end_scores = model(input_ids, attention_mask=attention_mask, output_attentions=False)[:2]
 
