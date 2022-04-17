@@ -62,7 +62,8 @@ model = pickle_load("model")
 
 tokenizer = pickle_load("tokenizer")
 question, text = "Who was Jim Henson?", "Jim Henson was a nice puppet"
-encoding = tokenizer(question, text, return_tensors='pt')
+seq = '<s>' +  question + ' </s> </s> ' + text + ' </s>'
+encoding = tokenizer(seq, return_tensors='pt')
 input_ids = encoding['input_ids']#.to(device)
 attention_mask = encoding['attention_mask']#.to(device)
 
