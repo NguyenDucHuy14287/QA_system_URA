@@ -19,9 +19,9 @@ def pickle_load(file_path):
 # eval_dataloader = DataLoader(tokenized_datasets, batch_size=8)
 
 # ############### Load model
-# model = pickle_load("model")
-model = pickle_load("trained_model")
-model.to(torch.device("cpu"))
+model = pickle_load("model")
+# model = pickle_load("trained_model")
+# model.to(torch.device("cpu"))
 
 # from torch.optim import AdamW
 # optimizer = AdamW(model.parameters(), lr=5e-5)
@@ -74,3 +74,6 @@ answer = tokenizer.convert_tokens_to_ids(answer.split())
 answer = tokenizer.decode(answer)
 #answer => 'a nice puppet' 
 print(answer)
+
+
+
