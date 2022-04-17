@@ -83,7 +83,7 @@ def answer(question, text):
     tokens = tokenizer.encode_plus(seq, return_tensors='pt', padding='max_length', max_length=1024)
     input_ids = tokens['input_ids']#.to('cuda')
     attention_mask = tokens['attention_mask']#.to('cuda')
-    start, end, _ = model(input_ids, attention_mask=attention_mask)
+    start, end = model(input_ids, attention_mask=attention_mask)
     start_idx = int(start.argmax().int())
     end_idx =  int(end.argmax().int())
     print(tokenizer.decode(input_ids[0, start_idx:end_idx]).strip())
