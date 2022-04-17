@@ -21,6 +21,7 @@ def pickle_load(file_path):
 # ############### Load model
 # model = pickle_load("model")
 model = pickle_load("trained_model")
+model.to(torch.device("cpu"))
 
 # from torch.optim import AdamW
 # optimizer = AdamW(model.parameters(), lr=5e-5)
