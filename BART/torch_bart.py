@@ -61,7 +61,7 @@ model = pickle_load("model")
 # pickle_dump(model, 'trained_model')
 
 tokenizer = pickle_load("tokenizer")
-question, text = "Who was Jim Henson?", "Jim Henson was a nice puppet"
+question, text = "Where does Tom live?", "Tom is an engineer in San Francisco."
 seq = '<s>' +  question + ' </s> </s> ' + text + ' </s>'
 encoding = tokenizer(seq, return_tensors='pt')
 input_ids = encoding['input_ids']#.to(device)
