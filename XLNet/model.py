@@ -1,61 +1,48 @@
-# from transformers import XLNetTokenizer, XLNetModel
-# import torch
+import logging
+
+logging.basicConfig(level=logging.INFO)
+transformers_logger = logging.getLogger("transformers")
+transformers_logger.setLevel(logging.WARNING)
+
+
+
+#Data preparation
+from datasets import load_dataset
+train_data = load_dataset('narrativeqa', split='train[:1]')
+# test_data = load_dataset('narrativeqa', split='test[:10%]')
+# eval_data = load_dataset('narrativeqa', split='eval[:10%]')
+print(train_data)
+
+
+
+
+# from simpletransformers.question_answering import QuestionAnsweringModel, QuestionAnsweringArgs
 #
 #
-# tokenizer = XLNetTokenizer.from_pretrained("xlnet-base-cased")
-# model = XLNetModel.from_pretrained("xlnet-base-cased")
+# model_args = QuestionAnsweringModel(
+#     n_best_size=2,
+#     doc_stride=500,
+#     max_answer_length=500,
+#     max_query_length=500
+# )
 #
-# inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
-# outputs = model(**inputs)
-#
-# last_hidden_states = outputs.last_hidden_state
-
-
-
-
-
-# import torch
-# from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
-# # from keras.preprocessing.sequence import pad_sequences
-# # from sklearn.model_selection import train_test_split
+# model = QuestionAnsweringModel(
+#     "xlnet",
+#     "xlnet-base-cased",
+#     args=model_args,
+#     use_cuda=True
+# )
 #
 #
-# from pytorch_transformers import XLNetModel, XLNetTokenizer, XLNetForSequenceClassification
-# from pytorch_transformers import AdamW
+# model.train_model(
+#     train_data,
+#     output_dir="./result/",
+#     show_running_loss=True,
+# )
 #
-# from tqdm import tqdm, trange
-# import pandas as pd
-# import io
-# import numpy as np
-# # import matplotlib.pyplot as plt
-# # % matplotlib inline
-#
-#
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# n_gpu = torch.cuda.device_count()
-# torch.cuda.get_device_name(0)
-
-
-
-
-
-
-from transformers import XLNetTokenizer, XLNetForQuestionAnsweringSimple
-import torch
-
-tokenizer = XLNetTokenizer.from_pretrained("xlnet-base-cased")
-model = XLNetForQuestionAnsweringSimple.from_pretrained("xlnet-base-cased")
-
-question, text = "Who was Jim Henson?", "Jim Henson was a nice puppet"
-
-inputs = tokenizer(question, text, return_tensors="pt")
-with torch.no_grad():
-    outputs = model(**inputs)
-
-answer_start_index = outputs.start_logits.argmax()
-answer_end_index = outputs.end_logits.argmax()
-
-predict_answer_tokens = inputs.input_ids[0, answer_start_index : answer_end_index + 1]
-a = tokenizer.decode(predict_answer_tokens)
-print(a)
-
+# result, model_outputs, wrong_preds = model.eval_model(
+#     eval_data,
+#     verbose=True,
+#     verbose_logging=True,
+#     output_dir="./result/",
+# )
