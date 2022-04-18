@@ -40,19 +40,22 @@
 
 
 
-from transformers import XLNetTokenizer, XLNetForQuestionAnswering
+from transformers import XLNetTokenizer, XLNetForQuestionAnsweringSimple
 import torch
 
 tokenizer = XLNetTokenizer.from_pretrained("xlnet-base-cased")
 model = XLNetForQuestionAnswering.from_pretrained("xlnet-base-cased")
 
-input_ids = torch.tensor(tokenizer.encode("Hello, my dog is cute", add_special_tokens=True)).unsqueeze(
-    0
-)  # Batch size 1
-start_positions = torch.tensor([1])
-end_positions = torch.tensor([3])
-outputs = model(input_ids, start_positions=start_positions, end_positions=end_positions)
+question, text = "Who was Jim Henson?", "Jim Henson was a nice puppet"
 
-loss = outputs.loss
-print(outputs)
+inputs = tokenizer(question, text, return_tensors="pt")
+with torch.no_grad():
+    outputs = model(**inputs)
+
+answer_start_index = outputs.start_logits.argmax()
+answer_end_index = outputs.end_logits.argmax()
+
+predict_answer_tokens = inputs.input_ids[0, answer_start_index : answer_end_index + 1]
+a = tokenizer.decode(predict_answer_tokens)
+print(a)
 
