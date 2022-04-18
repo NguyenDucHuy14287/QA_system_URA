@@ -44,7 +44,7 @@ from transformers import XLNetTokenizer, XLNetForQuestionAnsweringSimple
 import torch
 
 tokenizer = XLNetTokenizer.from_pretrained("xlnet-base-cased")
-model = XLNetForQuestionAnswering.from_pretrained("xlnet-base-cased")
+model = XLNetForQuestionAnsweringSimple.from_pretrained("xlnet-base-cased")
 
 question, text = "Who was Jim Henson?", "Jim Henson was a nice puppet"
 
