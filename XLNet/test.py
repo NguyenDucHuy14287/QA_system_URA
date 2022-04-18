@@ -108,7 +108,6 @@ eval_data = [
 model_args = QuestionAnsweringArgs()
 model_args.train_batch_size = 16
 model_args.evaluate_during_training = True
-model_args.
 
 model = QuestionAnsweringModel(
     "roberta", "roberta-base", args=model_args
