@@ -25,8 +25,7 @@ train_data = [
         ],
     },
     {
-        "context": "The first series, published between 2006 and 2008, consists of The Final Empire,"
-                   "The Well of Ascension, and The Hero of Ages.",
+        "context": "The first series, published between 2006 and 2008, consists of The Final Empire, The Well of Ascension, and The Hero of Ages.",
         "qas": [
             {
                 "id": "00002",
@@ -62,9 +61,7 @@ train_data = [
 
 eval_data = [
     {
-        "context": "The series primarily takes place in a region called the Final Empire "
-                   "on a world called Scadrial, where the sun and sky are red, vegetation is brown, "
-                   "and the ground is constantly being covered under black volcanic ashfalls.",
+        "context": "The series primarily takes place in a region called the Final Empire on a world called Scadrial, where the sun and sky are red, vegetation is brown, and the ground is constantly being covered under black volcanic ashfalls.",
         "qas": [
             {
                 "id": "00001",
@@ -138,3 +135,4 @@ to_predict = [
 answers, probabilities = model.predict(to_predict)
 
 print(answers)
+print(probabilities)
