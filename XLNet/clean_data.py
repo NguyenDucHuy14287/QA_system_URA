@@ -176,7 +176,7 @@ if __name__ == '__main__':
     dataset_list = ["train", "test", "validation"]
     for dataset_name in dataset_list:
         count = 0
-        raw_data_path = f"{ROOT_DIR}data/raw"
+        raw_data_path = f"{ROOT_DIR}/data/raw"
         cleaned_data_path = f"{ROOT_DIR}/data/cleaned/{dataset_name}"
         if not os.path.isdir(cleaned_data_path):
             clean_data(dataset_name, raw_data_path, cleaned_data_path)
