@@ -133,9 +133,7 @@ def clean_data(dataset_name, raw_data_path, cleaned_data_path):
     global count
     logging.info(f"=== Cleaning {dataset_name} set and save to \'{cleaned_data_path}\'")
 
-    data_files = [f'{raw_data_path}/{dataset_name}_{i}.json' for i in range(3)]
-
-    dataset = load_dataset('json', data_files=data_files)
+    dataset = load_dataset('parquet', data_files=[f'{raw_data_path}/{dataset_name}.parquet'])
     doc_id_set = set()
     for text in dataset:
         doc = text["document"]
