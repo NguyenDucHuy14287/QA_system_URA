@@ -2,3 +2,5 @@
 ./preprocessing/.ipynb_checkpoints
 ./preprocessing/data
 ./venv
+./test.py
+./XLNet/data
