@@ -13,6 +13,8 @@ from utils import append_text, write_pickle
 
 logging.basicConfig(level=logging.INFO)
 
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 url_regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
 rm_lst = [url_regex, "\t"]
 
@@ -174,8 +176,8 @@ if __name__ == '__main__':
     dataset_list = ["train", "test", "validation"]
     for dataset_name in dataset_list:
         count = 0
-        raw_data_path = f"./data/raw"
-        cleaned_data_path = f"./data/cleaned/{dataset_name}"
+        raw_data_path = f"{ROOT_DIR}data/raw"
+        cleaned_data_path = f"{ROOT_DIR}/data/cleaned/{dataset_name}"
         if not os.path.isdir(cleaned_data_path):
             clean_data(dataset_name, raw_data_path, cleaned_data_path)
 
